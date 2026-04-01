@@ -283,10 +283,48 @@
           <span class="slider"></span>
         </label>
       </div>
+    <div class="section">
+      <h2 style="margin-bottom: 12px;">Hidden Sites</h2>
+      <p class="hint">The search button is permanently hidden on these websites.</p>
+      <div id="hiddenSitesList" style="display: flex; flex-direction: column; gap: 8px;">
+        <!-- Dynamically filled by options.js -->
+        <p style="font-size: 13px; color: var(--muted); font-style: italic;">No sites hidden yet.</p>
+      </div>
     </div>
 
-
   </div>
+
+  <style>
+    .hidden-site-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: var(--accent-muted);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+    .hidden-site-item span {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+    }
+    .remove-site-btn {
+      background: transparent;
+      border: none;
+      color: #ff4444;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 4px;
+      transition: background-color 0.2s ease;
+    }
+    .remove-site-btn:hover {
+      background: rgba(255, 68, 68, 0.1);
+    }
+  </style>
 
   <div id="status" role="status" aria-live="polite">Settings saved</div>
   <script src="options.js"></script>

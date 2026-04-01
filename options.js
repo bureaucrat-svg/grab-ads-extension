@@ -60,10 +60,55 @@ function wireGeneralSettings() {
 }
 
 
+// -------- HIDDEN SITES (Management) --------
+function loadHiddenDomains() {
+  const container = document.getElementById('hiddenSitesList');
+  if (!container) return;
+
+  chrome.storage.local.get(['grab_ads_hidden_domains'], (result) => {
+    const domains = result.grab_ads_hidden_domains || [];
+    
+    if (domains.length === 0) {
+      container.innerHTML = `<p style="font-size: 13px; color: var(--muted); font-style: italic;">No sites hidden yet.</p>`;
+      return;
+    }
+
+    container.innerHTML = '';
+    domains.forEach(domain => {
+      const item = document.createElement('div');
+      item.className = 'hidden-site-item';
+      
+      const name = document.createElement('span');
+      name.textContent = domain;
+      
+      const removeBtn = document.createElement('button');
+      removeBtn.className = 'remove-site-btn';
+      removeBtn.textContent = 'Remove';
+      removeBtn.onclick = () => removeHiddenDomain(domain);
+      
+      item.appendChild(name);
+      item.appendChild(removeBtn);
+      container.appendChild(item);
+    });
+  });
+}
+
+function removeHiddenDomain(domain) {
+  chrome.storage.local.get(['grab_ads_hidden_domains'], (result) => {
+    let domains = result.grab_ads_hidden_domains || [];
+    domains = domains.filter(d => d !== domain);
+    
+    chrome.storage.local.set({ 'grab_ads_hidden_domains': domains }, () => {
+      loadHiddenDomains();
+      showStatus(`Removed ${domain} from hidden list.`);
+    });
+  });
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   restoreAdsOptions();
   wireGeneralSettings();
+  loadHiddenDomains();
 
   const countryEl = document.getElementById('country');
   const mediaEl = document.getElementById('media_type');
