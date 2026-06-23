@@ -54,7 +54,7 @@
     }
   ],
   "action": {
-    "default_title": "Grab Ads"
+    "default_title": "Ads Grabber"
   },
   "icons": {
     "16": "icons/icon-light.png",

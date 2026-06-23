@@ -11,22 +11,19 @@ function showStatus(message) {
 
 // -------- ADS LIBRARY HELPER PREFERENCES --------
 function saveAdsOptions() {
-  const countryEl = document.getElementById('country');
   const mediaEl = document.getElementById('media_type');
-  if (!countryEl || !mediaEl) return;
+  if (!mediaEl) return;
 
-  chrome.storage.sync.set({ country: countryEl.value, media_type: mediaEl.value }, () => {
+  chrome.storage.sync.set({ media_type: mediaEl.value }, () => {
     showStatus('Ads Library settings saved.');
   });
 }
 
 function restoreAdsOptions() {
-  const countryEl = document.getElementById('country');
   const mediaEl = document.getElementById('media_type');
-  if (!countryEl || !mediaEl) return;
+  if (!mediaEl) return;
 
-  chrome.storage.sync.get({ country: 'DEFAULT', media_type: 'all' }, (items) => {
-    countryEl.value = items.country;
+  chrome.storage.sync.get({ media_type: 'all' }, (items) => {
     mediaEl.value = items.media_type;
   });
 }
@@ -110,9 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
   wireGeneralSettings();
   loadHiddenDomains();
 
-  const countryEl = document.getElementById('country');
   const mediaEl = document.getElementById('media_type');
 
-  if (countryEl) countryEl.addEventListener('change', saveAdsOptions);
   if (mediaEl) mediaEl.addEventListener('change', saveAdsOptions);
 });

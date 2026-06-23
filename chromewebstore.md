@@ -9,7 +9,6 @@ This document outlines the permissions required by the Grab Ads extension and th
 
 ### `storage`
 **Justification**: Necessary to store user preferences locally, including:
-- Default country for searches.
 - Preferred media type filter (All, Image, Video).
 - Feature toggles (e.g., Enable/Disable Meta Ads Downloader).
 
@@ -18,7 +17,7 @@ This document outlines the permissions required by the Grab Ads extension and th
 
 ### Host Permissions: `https://www.facebook.com/ads/library*`
 **Justification**: The core functionality of the extension is to enhance the Meta Ads Library interface. This permission is required to:
-- Inject content scripts (`content-country.js`, `content-mediatype.js`) to automatically apply search filters.
+- Inject content scripts to automatically apply search filters.
 - Inject `meta-ads-downloader.js` to add download buttons to ad creatives directly on the page.
 
 ### `omnibox`

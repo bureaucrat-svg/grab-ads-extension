@@ -29,11 +29,10 @@
             // Only run on Ads Library pages
             if (!window.location.href.includes('/ads/library')) return;
 
-            chrome.storage.sync.get(['country', 'media_type'], function (result) {
-                const defaultCountry = result.country || 'DEFAULT';
+            chrome.storage.sync.get(['media_type'], function (result) {
                 const defaultMediaType = result.media_type || 'all';
                 const appliedKey = '__ads_grabber_filters_applied__';
-                const appliedFingerprint = `${window.location.href}|${defaultCountry}|${defaultMediaType}`;
+                const appliedFingerprint = `${window.location.href}|${defaultMediaType}`;
                 if (sessionStorage.getItem(appliedKey) === appliedFingerprint) {
                     return;
                 }
@@ -57,14 +56,7 @@
                         needsUpdate = true;
                     }
                 } else {
-                    // 1. Country Filter
-                    const hasCountryParam = params.has('country');
-                    if (defaultCountry !== 'DEFAULT' && !hasCountryParam) {
-                        params.set('country', defaultCountry);
-                        needsUpdate = true;
-                    }
-
-                    // 2. Media Type Filter
+                    // 1. Media Type Filter
                     const hasMediaTypeParam = params.has('media_type');
                     if (defaultMediaType !== 'all' && !hasMediaTypeParam) {
                         params.set('media_type', defaultMediaType);
@@ -79,7 +71,7 @@
                     if (window.location.href !== newUrl && lastAppliedUrl !== newUrl) {
                         console.log('[Grab Ads] Applying filters:', newUrl);
                         lastAppliedUrl = newUrl;
-                        sessionStorage.setItem(appliedKey, `${newUrl}|${defaultCountry}|${defaultMediaType}`);
+                        sessionStorage.setItem(appliedKey, `${newUrl}|${defaultMediaType}`);
                         window.location.replace(newUrl);
                     }
                 } else {

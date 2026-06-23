@@ -1,8 +1,11 @@
 // Sets sane defaults for Ads Library helper on install if they don't exist yet.
 chrome.runtime.onInstalled.addListener((details) => {
-  chrome.storage.sync.get(['country', 'media_type', 'context_menu_enabled', 'omnibox_enabled', 'meta_downloader_enabled'], (result) => {
+  if (details.reason === "install") {
+    chrome.tabs.create({ url: chrome.runtime.getURL("tutorial.html") });
+  }
+
+  chrome.storage.sync.get(['media_type', 'context_menu_enabled', 'omnibox_enabled', 'meta_downloader_enabled'], (result) => {
     const toSet = {};
-    if (!result.country) toSet.country = 'DEFAULT';
     if (!result.media_type) toSet.media_type = 'all';
     if (result.context_menu_enabled === undefined) toSet.context_menu_enabled = true;
     if (result.omnibox_enabled === undefined) toSet.omnibox_enabled = true;
@@ -27,7 +30,7 @@ chrome.runtime.onInstalled.addListener((details) => {
 // Meta Ads Library URL template with dynamic searchType and mediaType
 const URL_TEMPLATE = "https://www.facebook.com/ads/library/"
   + "?active_status=active&ad_type=all"
-  + "&country=${country}"
+  + "&country=ALL"
   + "&search_type=${searchType}"
   + "&media_type=${mediaType}"
   + "${days}"
@@ -72,11 +75,7 @@ function buildDaysParameter(daysObj) {
   return `&start_date[min]=${formatDate(minDate)}&start_date[max]=${formatDate(maxDate)}`;
 }
 
-function getCountry() {
-  return new Promise((resolve) => {
-    chrome.storage.sync.get({ country: 'DEFAULT' }, (items) => resolve(items.country));
-  });
-}
+
 
 function getMediaType() {
   return new Promise((resolve) => {
@@ -89,9 +88,8 @@ function getSearchType(raw) {
   return /["“”]/.test(raw) ? "keyword_exact_phrase" : "keyword_unordered";
 }
 
-function buildUrl(query, country, mediaType) {
+function buildUrl(query, mediaType) {
   const searchType = getSearchType(query || "");
-  const normalizedCountry = country && country !== 'DEFAULT' ? country : 'ALL';
 
   // Extract days parameters and clean query
   const days = extractDaysParameters(query || "");
@@ -99,12 +97,10 @@ function buildUrl(query, country, mediaType) {
 
   // keep user quotes; Ads Library understands "%22...%22"
   const q = encodeURIComponent(cleanQuery);
-  const c = encodeURIComponent(normalizedCountry);
   const m = encodeURIComponent(mediaType || 'all');
   const d = buildDaysParameter(days);
 
   return URL_TEMPLATE
-    .replace("${country}", c)
     .replace("${searchType}", searchType)
     .replace("${mediaType}", m)
     .replace("${days}", d)
@@ -143,9 +139,8 @@ function removeContextMenu() {
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   if (info.menuItemId === "searchAdsLibrary" && info.selectionText) {
     const query = `"${info.selectionText.trim()}"`;
-    const country = await getCountry();
     const mediaType = await getMediaType();
-    const url = buildUrl(query, country, mediaType);
+    const url = buildUrl(query, mediaType);
     chrome.tabs.create({ url, active: true });
   }
 });
@@ -168,12 +163,11 @@ chrome.omnibox.onInputEntered.addListener(async (text) => {
   // (though usually they hit space then type query)
   const query = (text || "").trim();
 
-  const country = await getCountry();
   const mediaType = await getMediaType();
 
   // If query is empty, maybe just open the library home? 
   // But let's assume they want to search "something" or if empty just open the page.
-  const searchUrl = buildUrl(query, country, mediaType);
+  const searchUrl = buildUrl(query, mediaType);
 
   chrome.tabs.create({ url: searchUrl });
 });
@@ -182,9 +176,8 @@ chrome.omnibox.onInputEntered.addListener(async (text) => {
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.type === "SEARCH_ADS_LIBRARY") {
     (async () => {
-      const country = await getCountry();
       const mediaType = await getMediaType();
-      const searchUrl = buildUrl(request.query || "", country, mediaType);
+      const searchUrl = buildUrl(request.query || "", mediaType);
       chrome.tabs.create({ url: searchUrl, active: true });
     })();
     return true; // Keep message channel open for async response if needed (though we don't send one presently)

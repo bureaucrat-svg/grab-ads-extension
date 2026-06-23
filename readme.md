@@ -44,7 +44,6 @@ That's it!
 
 ### 3) Settings (Options page)
 Open from the extension menu (Options) or `chrome://extensions` → Details → Extension options.
-- **Country**: Pick your default country for searches (US by default).
 - **Media Type**: All / Video / Image / Image + Meme (applied to all your searches).
 - **Theme**: Use the toggle to switch between dark and light modes.
 
@@ -60,10 +59,10 @@ Open from the extension menu (Options) or `chrome://extensions` → Details → 
 ## Architecture / Files
 - `manifest.json` – Extension configuration, permissions, content scripts.
 - `background.js` – Omnibox logic, context menus, and domain search handlers.
-- `content-filter.js` – Enforces default country and filters on the Meta Ads Library page.
+- `content-filter.js` – Enforces default media type filter on the Meta Ads Library page.
 - `meta-ads-downloader.js` – Injects download buttons on creatives within the Ads Library.
 - `search-btn.js` – Utility scripts injected on generic pages.
-- `options.html` & `options.js` – Settings UI (country, media type, theme toggle).
+- `options.html` & `options.js` – Settings UI (media type, theme toggle).
 
 ---
 
