@@ -42,15 +42,6 @@
         "meta-ads-downloader.js"
       ],
       "run_at": "document_idle"
-    },
-    {
-      "matches": [
-        "<all_urls>"
-      ],
-      "js": [
-        "search-btn.js"
-      ],
-      "run_at": "document_idle"
     }
   ],
   "action": {

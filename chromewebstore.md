@@ -5,7 +5,7 @@ This document outlines the permissions required by the Grab Ads extension and th
 ## Permissions
 
 ### `activeTab`
-**Justification**: Required to allow the user to trigger extension actions on the current tab, such as searching the Ads Library for the current domain via the toolbar icon.
+**Justification**: Required to allow the user to trigger extension actions on the current tab, such as opening the options page or other active tab features.
 
 ### `storage`
 **Justification**: Necessary to store user preferences locally, including:
@@ -22,7 +22,7 @@ This document outlines the permissions required by the Grab Ads extension and th
 
 ### `omnibox`
 **Keyword**: `@ads`
-**Justification**: Adds a keyword to the Chrome address bar, allowing users to quickly search the Meta Ads Library by typing `@ads <query>`.
+**Justification**: Adds a keyword to the Chrome address bar, allowing users to quickly extract the domain from a URL and search the Meta Ads Library by typing `@ads <url>`.
 
 ## Data Usage
 The extension functions entirely client-side. No user data is collected, stored on external servers, or shared with third parties. All `storage` usage is local to the user's browser instance.

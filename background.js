@@ -157,29 +157,38 @@ chrome.storage.onChanged.addListener((changes, area) => {
 });
 
 
-// ---- OMNIBOX INPUT HANDLER (@ads <query>) ----
+// ---- OMNIBOX INPUT HANDLER (@ <url>) ----
 chrome.omnibox.onInputEntered.addListener(async (text) => {
-  // If user just types "@ads" without query, open the library
-  // (though usually they hit space then type query)
-  const query = (text || "").trim();
+  let query = (text || "").trim();
+  if (!query) return;
 
+  // Extract domain only if it looks like a URL
+  try {
+    let isUrl = false;
+    let urlToParse = query;
+    
+    if (urlToParse.startsWith('http://') || urlToParse.startsWith('https://')) {
+      isUrl = true;
+    } else if (urlToParse.includes('/') || urlToParse.includes('.')) {
+      urlToParse = 'https://' + urlToParse;
+      isUrl = true;
+    }
+
+    if (isUrl) {
+      const urlObj = new URL(urlToParse);
+      query = decodeURIComponent(urlObj.hostname).replace(/^www\./, '');
+    }
+  } catch (e) {
+    // If URL parsing fails, attempt regex fallback
+    const match = query.match(/^(?:https?:\/\/)?(?:www\.)?([^\/:]+)/i);
+    if (match) {
+      query = decodeURIComponent(match[1]);
+    }
+  }
+
+  // Meta Ads Library URL
   const mediaType = await getMediaType();
-
-  // If query is empty, maybe just open the library home? 
-  // But let's assume they want to search "something" or if empty just open the page.
   const searchUrl = buildUrl(query, mediaType);
 
   chrome.tabs.create({ url: searchUrl });
-});
-
-// Listener for the floating Search Button
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.type === "SEARCH_ADS_LIBRARY") {
-    (async () => {
-      const mediaType = await getMediaType();
-      const searchUrl = buildUrl(request.query || "", mediaType);
-      chrome.tabs.create({ url: searchUrl, active: true });
-    })();
-    return true; // Keep message channel open for async response if needed (though we don't send one presently)
-  }
 });
