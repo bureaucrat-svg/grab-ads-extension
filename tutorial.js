@@ -3,11 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (openOptionsBtn) {
     openOptionsBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      if (chrome && chrome.runtime && chrome.runtime.openOptionsPage) {
-        chrome.runtime.openOptionsPage();
-      } else {
-        window.location.href = 'options.html';
-      }
+      window.location.href = 'sidepanel.html';
     });
   }
 });

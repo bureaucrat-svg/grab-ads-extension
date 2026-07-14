@@ -10,7 +10,6 @@ A tiny, powerful helper for the Meta Ads Library that saves you clicks and time.
 - **Right‑click search**: Select text on any page → right-click → "Search Ads Library for ...".
 - **Media type filter**: Choose All, Video, Image, or Image + Meme in the options, and it includes the filter in Meta Ads Library searches.
 - **Downloader**: Quick download buttons on ad images and videos directly inside the Meta Ads Library.
-- **Dark mode**: Clean options page with a header toggle (default is dark theme).
 
 ---
 
@@ -35,10 +34,9 @@ That's it!
 ### 2) From any page
 - Select text, right‑click → “Search Ads Library for "..."”.
 
-### 3) Settings (Options page)
-Open from the extension menu (Options) or `chrome://extensions` → Details → Extension options.
+### 3) Settings (Side Panel)
+Click the extension icon to open the side panel settings.
 - **Media Type**: All / Video / Image / Image + Meme (applied to all your searches).
-- **Theme**: Use the toggle to switch between dark and light modes.
 
 ---
 
@@ -54,7 +52,7 @@ Open from the extension menu (Options) or `chrome://extensions` → Details → 
 - `background.js` – Omnibox logic, context menus, and domain search handlers.
 - `content-filter.js` – Enforces default media type filter on the Meta Ads Library page.
 - `meta-ads-downloader.js` – Injects download buttons on creatives within the Ads Library.
-- `options.html` & `options.js` – Settings UI (media type, theme toggle).
+- `sidepanel.html` & `sidepanel.js` – Side panel UI for Settings (media type).
 
 ---
 

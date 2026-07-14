@@ -7,7 +7,8 @@
     "activeTab",
     "scripting",
     "storage",
-    "contextMenus"
+    "contextMenus",
+    "sidePanel"
   ],
   "host_permissions": [
     "https://www.facebook.com/ads/library*",
@@ -21,7 +22,9 @@
   "background": {
     "service_worker": "background.js"
   },
-  "options_page": "options.html",
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
   "content_scripts": [
     {
       "matches": [
@@ -48,9 +51,9 @@
     "default_title": "Ads Grabber"
   },
   "icons": {
-    "16": "icons/icon-light.png",
-    "32": "icons/icon-light.png",
-    "48": "icons/icon-light.png",
-    "128": "icons/icon-light.png"
+    "16": "icons/icon.png",
+    "32": "icons/icon.png",
+    "48": "icons/icon.png",
+    "128": "icons/icon.png"
   }
 }
