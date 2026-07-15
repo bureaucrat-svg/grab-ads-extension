@@ -20,6 +20,9 @@ This document outlines the permissions required by the Grab Ads extension and th
 - Inject content scripts to automatically apply search filters.
 - Inject `meta-ads-downloader.js` to add download buttons to ad creatives directly on the page.
 
+### `sidePanel`
+**Justification**: Used to display the extension's main interface in Chrome's built-in side panel. This allows users to browse, filter, and interact with Meta Ads Library results without leaving or overlapping the current page, providing a non-intrusive, persistent workspace alongside the browser content.
+
 ### `omnibox`
 **Keyword**: `@ads`
 **Justification**: Adds a keyword to the Chrome address bar, allowing users to quickly extract the domain from a URL and search the Meta Ads Library by typing `@ads <url>`.
