@@ -157,34 +157,45 @@
     el.title = `Download ${mediaType === 'video' ? 'Video' : 'Image'}`;
     el.dataset.mediaType = mediaType;
 
-    el.innerText = 'Download';
+    // Use a simpler, slightly thicker icon that matches Meta's style
+    el.innerHTML = `
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+        <polyline points="7 10 12 15 17 10"></polyline>
+        <line x1="12" y1="15" x2="12" y2="3"></line>
+      </svg>
+      Download
+    `;
 
     Object.assign(el.style, {
-      padding: '8px 16px',
+      padding: '6px 12px',
       cursor: 'pointer',
-      background: 'black',
-      color: '#ffffff',
-      border: '2px solid black',
-      borderRadius: '6px',
-      fontSize: '14px',
+      background: '#e4e6eb', // Meta's secondary button color
+      color: '#050505',      // Meta's primary text color
+      border: 'none',
+      borderRadius: '6px',   // Matches the 'See ad details' button
+      fontSize: '15px',
       fontWeight: '600',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
       marginLeft: '8px',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
-      transition: 'all 0.2s ease'
+      transition: 'background-color 0.2s ease',
+      boxShadow: 'none'
     });
 
-    // Hover effect: white bg, blue text
     el.onmouseenter = () => {
-      el.style.background = '#ffffff';
-      el.style.color = 'black';
+      el.style.background = '#d8dadf'; // Meta's hover state color
     };
     el.onmouseleave = () => {
-      el.style.background = 'black';
-      el.style.color = '#ffffff';
-      el.style.transform = 'translateY(0)';
+      el.style.background = '#e4e6eb';
+    };
+    el.onmousedown = () => {
+      el.style.transform = 'scale(0.96)';
+    };
+    el.onmouseup = () => {
+      el.style.transform = 'scale(1)';
     };
 
     return el;
