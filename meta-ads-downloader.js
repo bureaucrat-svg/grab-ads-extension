@@ -6,7 +6,7 @@
   let isEnabled = false;
   let initialized = false;
   let storageListenerBound = false;
-  let observer;
+  let pollingInterval;
   const AD_SELECTOR = '.xh8yej3 .x1gzqxud:not(.ad_library_downloader_extension), ._7jvw:not(.ad_library_downloader_extension), div[role="article"]:not(.ad_library_downloader_extension)';
 
   const ToastManager = {
@@ -83,29 +83,23 @@
   };
 
   function startObserver() {
-    if (observer) return;
+    if (pollingInterval) return;
 
-    // Debounce processing to avoid spamming on heavy DOM updates
-    let timeout;
-    const debouncedProcess = () => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        if (!isEnabled || !authAllowed) return;
-        const newAds = document.querySelectorAll(AD_SELECTOR);
-        if (newAds.length) {
-          processAds(newAds);
-        }
-      }, 500); // 500ms debounce
-    };
-
-    observer = new MutationObserver(debouncedProcess);
-    observer.observe(document.body, { childList: true, subtree: true });
+    // Use a lightweight periodic check instead of a heavy MutationObserver
+    // This completely eliminates DOM mutation CPU trashing during scroll.
+    pollingInterval = setInterval(() => {
+      if (!isEnabled || !authAllowed) return;
+      const newAds = document.querySelectorAll(AD_SELECTOR);
+      if (newAds.length) {
+        processAds(newAds);
+      }
+    }, 1200); // 1.2s polling is unnoticeable to the user but saves massive CPU
   }
 
   function stopObserver() {
-    if (observer) {
-      observer.disconnect();
-      observer = null;
+    if (pollingInterval) {
+      clearInterval(pollingInterval);
+      pollingInterval = null;
     }
   }
 
@@ -159,7 +153,7 @@
 
     // Use a simpler, slightly thicker icon that matches Meta's style
     el.innerHTML = `
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;">
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
         <polyline points="7 10 12 15 17 10"></polyline>
         <line x1="12" y1="15" x2="12" y2="3"></line>
@@ -168,13 +162,13 @@
     `;
 
     Object.assign(el.style, {
-      padding: '6px 12px',
+      padding: '5px 10px',
       cursor: 'pointer',
       background: '#e4e6eb', // Meta's secondary button color
       color: '#050505',      // Meta's primary text color
       border: 'none',
       borderRadius: '6px',   // Matches the 'See ad details' button
-      fontSize: '15px',
+      fontSize: '12px',
       fontWeight: '600',
       display: 'flex',
       justifyContent: 'center',

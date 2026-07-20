@@ -30,7 +30,6 @@ chrome.runtime.onInstalled.addListener((details) => {
 // Meta Ads Library URL template with dynamic searchType and mediaType
 const URL_TEMPLATE = "https://www.facebook.com/ads/library/"
   + "?active_status=active&ad_type=all"
-  + "&country=ALL"
   + "&search_type=${searchType}"
   + "&media_type=${mediaType}"
   + "${days}"

@@ -43,10 +43,7 @@
 
                 // Special case for ID lookup
                 if (params.has('id')) {
-                    if (!params.has('country') || params.get('country') !== 'ALL') {
-                        params.set('country', 'ALL');
-                        needsUpdate = true;
-                    }
+                    // Country filter removed as requested
                     if (!params.has('active_status') || params.get('active_status') !== 'all') {
                         params.set('active_status', 'all');
                         needsUpdate = true;
@@ -108,20 +105,13 @@
         // Run on initial load
         handleUrlChange();
 
-        observer = new MutationObserver(() => {
+        // Lightweight fallback for internal router changes that miss history API
+        setInterval(() => {
             if (window.location.href !== lastUrl) {
                 lastUrl = window.location.href;
                 handleUrlChange();
             }
-        });
-
-        if (document.body) {
-            observer.observe(document.body, { childList: true, subtree: true });
-        } else {
-            document.addEventListener('DOMContentLoaded', () => {
-                observer.observe(document.body, { childList: true, subtree: true });
-            });
-        }
+        }, 500);
     }
 
     // Initialize immediately without auth checks
