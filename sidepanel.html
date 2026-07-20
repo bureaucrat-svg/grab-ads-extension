@@ -3,146 +3,230 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ads Grabber - Options</title>
+  <title>Grab Ads - Settings</title>
   <style>
     :root {
-      --bg: #ffffff;
-      --text: #000000;
-      --muted: #666666;
-      --border: #e0e0e0;
-      --border-hover: #000000;
-      --accent: #000000;
-      --accent-muted: rgba(0, 0, 0, 0.05);
-      --radius: 8px;
+      --bg: #09090b;
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #6366f1;
+      --accent-hover: #818cf8;
+      --accent-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+      --success: #10b981;
+      --radius: 20px;
+      --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
+    * {
+      box-sizing: border-box;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes slideUpFade {
+      0% { opacity: 0; transform: translateY(30px) scale(0.95); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-5px); }
+      100% { transform: translateY(0px); }
+    }
+
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(99, 102, 241, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+    }
 
     html, body {
-      height: 100%;
+      min-height: 100%;
       margin: 0;
-      background: var(--bg);
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(circle at 15% 50%, rgba(99, 102, 241, 0.15), transparent 25%),
+        radial-gradient(circle at 85% 30%, rgba(168, 85, 247, 0.15), transparent 25%);
+      background-size: 200% 200%;
+      animation: gradientBG 15s ease infinite;
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
     }
 
-    .page {
-      max-width: 560px;
-      margin: 48px auto;
-      padding: 0 24px;
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 24px;
       display: flex;
       flex-direction: column;
+      gap: 20px;
     }
 
-    .header-block {
-      margin-bottom: 32px;
-      padding-bottom: 16px;
-      border-bottom: 2px solid var(--text);
+    .header {
+      text-align: center;
+      padding: 20px 0;
+      opacity: 0;
+      animation: slideUpFade 0.6s var(--ease-out) forwards;
     }
 
-    .header-block h1 {
+    .header h1 {
       margin: 0;
-      font-size: 28px;
+      font-size: 32px;
       font-weight: 800;
-      letter-spacing: -0.03em;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -1px;
     }
 
-    .header-block p {
-      margin: 6px 0 0;
+    .header p {
+      margin: 8px 0 0;
       color: var(--muted);
       font-size: 14px;
+      font-weight: 500;
     }
 
-    .section {
-      padding: 24px 0;
-      border-bottom: 1px solid var(--border);
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 24px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      opacity: 0;
+      transform-origin: center top;
+      animation: slideUpFade 0.6s var(--ease-out) forwards;
+      transition: transform 0.3s var(--ease-out), border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .section:last-child {
-      border-bottom: none;
+    .card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
     }
 
-    .section h2 {
-      margin: 0 0 6px;
-      font-size: 15px;
+    .card:nth-child(2) { animation-delay: 0.1s; }
+    .card:nth-child(3) { animation-delay: 0.2s; }
+    .card:nth-child(4) { animation-delay: 0.3s; }
+    .card:nth-child(5) { animation-delay: 0.4s; }
+
+    .card h2 {
+      margin: 0 0 8px;
+      font-size: 18px;
       font-weight: 700;
-      letter-spacing: -0.01em;
-      text-transform: uppercase;
-    }
-
-    .section .hint {
-      margin: 0 0 16px;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .field {
       display: flex;
-      flex-direction: column;
+      align-items: center;
       gap: 8px;
     }
 
+    .card h2 svg {
+      color: var(--accent);
+    }
+
+    .card .hint {
+      margin: 0 0 20px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    /* Custom Select */
+    .select-wrapper {
+      position: relative;
+    }
+    
     select {
       width: 100%;
-      padding: 10px 12px;
-      font-size: 14px;
+      padding: 14px 16px;
+      font-size: 15px;
       color: var(--text);
-      background: var(--bg);
-      border: 1px solid var(--border);
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       outline: none;
       appearance: none;
-      -webkit-appearance: none;
-      border-radius: var(--radius);
-      transition: all 0.2s ease;
-      background-image: linear-gradient(45deg, transparent 50%, var(--text) 50%), linear-gradient(135deg, var(--text) 50%, transparent 50%);
-      background-position: calc(100% - 20px) calc(50% + 2px), calc(100% - 14px) calc(50% + 2px);
-      background-size: 6px 6px, 6px 6px;
-      background-repeat: no-repeat;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s var(--ease-spring);
     }
 
     select:hover {
-      border-color: var(--border-hover);
+      border-color: rgba(255, 255, 255, 0.2);
+      background: rgba(0, 0, 0, 0.3);
     }
 
     select:focus {
-      border-color: var(--text);
-      box-shadow: 0 0 0 3px var(--accent-muted);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
     }
 
-    .btn {
-      display: inline-flex;
+    .select-wrapper::after {
+      content: "";
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 10px;
+      height: 6px;
+      background-color: var(--muted);
+      clip-path: polygon(100% 0%, 0 0%, 50% 100%);
+      pointer-events: none;
+      transition: background-color 0.3s;
+    }
+
+    select:focus + .select-wrapper::after {
+      background-color: var(--accent);
+    }
+
+    select option {
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    /* Toggles */
+    .toggle-row {
+      display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 10px 16px;
-      border-radius: var(--radius);
-      border: 1px solid var(--text);
-      background: var(--bg);
-      color: var(--text);
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .toggle-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .toggle-info {
+      flex: 1;
+      padding-right: 16px;
+    }
+
+    .toggle-info strong {
+      display: block;
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .toggle-info span {
+      display: block;
       font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .btn:hover {
-      background: var(--text);
-      color: var(--bg);
-    }
-
-    .btn:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-      background: var(--bg);
-      color: var(--text);
+      color: var(--muted);
     }
 
     .switch {
       position: relative;
-      display: inline-flex;
-      width: 40px;
-      height: 22px;
+      display: inline-block;
+      width: 48px;
+      height: 26px;
       flex-shrink: 0;
     }
 
@@ -156,87 +240,209 @@
       position: absolute;
       cursor: pointer;
       inset: 0;
-      background: var(--border);
-      border-radius: 999px;
-      transition: all 0.25s ease;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 26px;
+      transition: 0.4s var(--ease-spring);
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .slider:before {
-      content: "";
       position: absolute;
-      height: 16px;
-      width: 16px;
-      left: 3px;
-      bottom: 3px;
-      background: var(--bg);
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 2px;
+      bottom: 2px;
+      background-color: var(--text);
       border-radius: 50%;
-      transition: transform 0.25s cubic-bezier(0.4, 0.0, 0.2, 1);
-      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+      transition: 0.4s var(--ease-spring);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
 
     .switch input:checked + .slider {
-      background: var(--accent);
+      background: var(--accent-gradient);
+      border-color: transparent;
     }
 
     .switch input:checked + .slider:before {
-      transform: translateX(18px);
-      box-shadow: none;
+      transform: translateX(22px);
     }
 
+    .switch:hover .slider:before {
+      box-shadow: 0 0 8px rgba(255,255,255,0.4);
+    }
+
+    /* Guide List */
+    .guide-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .guide-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 14px;
+      line-height: 1.5;
+      background: rgba(255, 255, 255, 0.02);
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .guide-list li:hover {
+      transform: translateX(4px);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .guide-list li::before {
+      content: "✓";
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      background: rgba(99, 102, 241, 0.2);
+      color: var(--accent);
+      border-radius: 50%;
+      font-size: 12px;
+      font-weight: bold;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* Trust Badges */
+    .trust-badges {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .badge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      text-align: center;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .badge:nth-child(2) { animation-delay: 1s; }
+    .badge:nth-child(3) { animation-delay: 2s; }
+
+    .badge-icon {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--accent);
+      transition: all 0.3s var(--ease-spring);
+    }
+
+    .badge:hover .badge-icon {
+      transform: scale(1.1) rotate(5deg);
+      background: rgba(99, 102, 241, 0.1);
+      border-color: var(--accent);
+      color: var(--text);
+      animation: pulseGlow 1.5s infinite;
+    }
+
+    .badge span {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      transition: color 0.3s ease;
+    }
+
+    .badge:hover span {
+      color: var(--text);
+    }
+
+    /* Toast */
     #status {
       position: fixed;
-      bottom: 24px;
+      bottom: 32px;
       left: 50%;
-      transform: translateX(-50%) translateY(16px);
-      background-color: var(--text);
+      transform: translateX(-50%) translateY(20px) scale(0.9);
+      background: var(--text);
       color: var(--bg);
-      padding: 10px 24px;
+      padding: 12px 24px;
       border-radius: 999px;
       font-size: 14px;
       font-weight: 600;
       opacity: 0;
-      transition: opacity 0.3s ease, transform 0.3s ease;
-      z-index: 1000;
       pointer-events: none;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      transition: all 0.4s var(--ease-spring);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #status::before {
+      content: "";
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: var(--success);
+      border-radius: 50%;
     }
 
     #status.show {
       opacity: 1;
-      transform: translateX(-50%) translateY(0);
+      transform: translateX(-50%) translateY(0) scale(1);
     }
   </style>
 </head>
 <body>
-  <div class="page">
-    <div class="header-block">
-      <h1>Ads Grabber</h1>
-      <p>Minimalist Settings</p>
+  <div class="container">
+    
+    <div class="header">
+      <h1>Grab Ads</h1>
+      <p>Supercharge your Meta Ads Library</p>
     </div>
 
-
-
-    <div class="section">
-      <h2>Media type</h2>
-      <p class="hint">Filter Ads Library results by creative format.</p>
-      <div class="field">
+    <!-- Media Type Card -->
+    <div class="card">
+      <h2>
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4a2 2 0 012-2h14a2 2 0 012 2v16a2 2 0 01-2 2H5a2 2 0 01-2-2V4z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M8 2v4m8-4v4M3 10h18"></path></svg>
+        Media Filter
+      </h2>
+      <p class="hint">Automatically filter Ads Library results by creative format.</p>
+      <div class="select-wrapper">
         <select id="media_type">
-          <option value="all">All</option>
-          <option value="video">Video</option>
-          <option value="image">Image</option>
+          <option value="all">All Media Types</option>
+          <option value="video">Video Only</option>
+          <option value="image">Image Only</option>
           <option value="image_and_meme">Image and Meme</option>
         </select>
       </div>
     </div>
-    
-    <div class="section">
-      <h2>Features</h2>
-      <p class="hint">Enable or disable core extension features.</p>
 
-      <div style="display:flex; align-items:center; gap:16px; margin-bottom: 24px;">
-        <label for="metaDownloaderToggle" style="flex:1;">
-          <span style="display:block; font-size:14px; font-weight:600; color:var(--text);">Meta Ads Downloader</span>
-          <span style="display:block; font-size:13px; color:var(--muted); margin-top:4px; font-weight:400;">Show download buttons inside the Meta Ads Library.</span>
+    <!-- Features Card -->
+    <div class="card">
+      <h2>
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+        Features
+      </h2>
+      <p class="hint">Enable or disable core capabilities on the fly.</p>
+      
+      <div class="toggle-row">
+        <label for="metaDownloaderToggle" class="toggle-info">
+          <strong>Meta Ads Downloader</strong>
+          <span>Injects quick download buttons for videos & images.</span>
         </label>
         <label class="switch">
           <input type="checkbox" id="metaDownloaderToggle" checked />
@@ -244,10 +450,10 @@
         </label>
       </div>
 
-      <div style="display:flex; align-items:center; gap:16px;">
-        <label for="contextMenuToggle" style="flex:1;">
-          <span style="display:block; font-size:14px; font-weight:600; color:var(--text);">Context Menu</span>
-          <span style="display:block; font-size:13px; color:var(--muted); margin-top:4px; font-weight:400;">Enable "Search Ads Library for..." on right-click over any text.</span>
+      <div class="toggle-row">
+        <label for="contextMenuToggle" class="toggle-info">
+          <strong>Context Menu Search</strong>
+          <span>Right-click any text to search the Ads Library instantly.</span>
         </label>
         <label class="switch">
           <input type="checkbox" id="contextMenuToggle" checked />
@@ -255,7 +461,53 @@
         </label>
       </div>
     </div>
-  </div>  <div id="status" role="status" aria-live="polite">Settings saved</div>
+
+    <!-- Guide Card -->
+    <div class="card">
+      <h2>
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+        Quick Guide
+      </h2>
+      <ul class="guide-list">
+        <li>Type <strong>@ads</strong> in your address bar followed by any URL to search that domain.</li>
+        <li>Select text on any webpage, right-click, and choose <strong>Search Ads Library</strong>.</li>
+        <li>Hover over ads in the Meta library to reveal quick download buttons.</li>
+      </ul>
+    </div>
+
+    <!-- Privacy Card -->
+    <div class="card">
+      <h2>
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+        Trust & Privacy
+      </h2>
+      <p class="hint" style="text-align: center; margin-bottom: 24px;">Built with privacy in mind. Your data never leaves your device.</p>
+      
+      <div class="trust-badges">
+        <div class="badge">
+          <div class="badge-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          </div>
+          <span>Secure</span>
+        </div>
+        <div class="badge">
+          <div class="badge-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+          </div>
+          <span>No Tracking</span>
+        </div>
+        <div class="badge">
+          <div class="badge-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          </div>
+          <span>Local Only</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  
+  <div id="status" role="status" aria-live="polite">Settings saved</div>
   <script src="sidepanel.js"></script>
 </body>
 </html>
