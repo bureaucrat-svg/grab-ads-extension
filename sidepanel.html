@@ -77,6 +77,64 @@
       font-weight: 500;
     }
 
+    /* Rating Banner */
+    .rating-banner {
+      background: linear-gradient(135deg, #ffcc00, #ffb300);
+      border-radius: var(--radius);
+      padding: 16px;
+      color: #3d2600;
+      display: none; /* hidden by default, shown via JS */
+      flex-direction: column;
+      gap: 12px;
+      opacity: 0;
+      animation: slideUpFade 0.5s var(--ease-out) forwards;
+      box-shadow: 0 4px 15px rgba(255, 204, 0, 0.3);
+    }
+    
+    .rating-banner p {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    .rating-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: #3d2600;
+      color: #ffcc00;
+    }
+
+    .btn-primary:hover {
+      background: #1f1300;
+      transform: scale(0.98);
+    }
+
+    .btn-secondary {
+      background: rgba(61, 38, 0, 0.1);
+      color: #3d2600;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(61, 38, 0, 0.15);
+      transform: scale(0.98);
+    }
+
     /* Cards */
     .card {
       background: var(--card-bg);
@@ -345,6 +403,15 @@
     <div class="header">
       <h1>Grab Ads</h1>
       <p>Supercharge your Meta Ads Library</p>
+    </div>
+
+    <!-- Rating Banner -->
+    <div id="ratingBanner" class="rating-banner">
+      <p>Enjoying Grab Ads? Please consider leaving a review to support us!</p>
+      <div class="rating-actions">
+        <button id="btnRateNow" class="btn btn-primary">Rate Now</button>
+        <button id="btnDismissRate" class="btn btn-secondary">Dismiss</button>
+      </div>
     </div>
 
     <!-- Media Type Card -->

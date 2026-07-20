@@ -58,7 +58,37 @@ function wireGeneralSettings() {
 
 
 
+// -------- RATING BANNER --------
+function wireRatingBanner() {
+  const banner = document.getElementById('ratingBanner');
+  const btnRateNow = document.getElementById('btnRateNow');
+  const btnDismissRate = document.getElementById('btnDismissRate');
+
+  if (!banner || !btnRateNow || !btnDismissRate) return;
+
+  chrome.storage.sync.get({ rating_dismissed: false }, (items) => {
+    if (!items.rating_dismissed) {
+      banner.style.display = 'flex';
+    }
+  });
+
+  const dismissBanner = () => {
+    chrome.storage.sync.set({ rating_dismissed: true }, () => {
+      banner.style.display = 'none';
+    });
+  };
+
+  btnDismissRate.addEventListener('click', dismissBanner);
+
+  btnRateNow.addEventListener('click', () => {
+    const reviewUrl = 'https://chromewebstore.google.com/detail/facebook-ads-library-down/mmcndinbnbpoeaaibkicphphkgjbmngp/reviews';
+    chrome.tabs.create({ url: reviewUrl });
+    dismissBanner();
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  wireRatingBanner();
   restoreAdsOptions();
   wireGeneralSettings();
 
