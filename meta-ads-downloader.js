@@ -34,17 +34,18 @@
       toast.textContent = message;
 
       Object.assign(toast.style, {
-        background: '#000000',
+        background: '#1a1033',
         color: '#ffffff',
         padding: '12px 24px',
-        borderRadius: '8px',
-        border: '1px solid #333333',
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+        borderRadius: '999px',
+        border: '3px solid #ff5fa2',
+        boxShadow: '4px 4px 0 #ffd23f',
         fontSize: '14px',
-        fontWeight: '600',
+        fontWeight: '800',
+        fontFamily: '"Avenir Next", "Trebuchet MS", system-ui, sans-serif',
         opacity: '0',
-        transform: 'translateY(12px)',
-        transition: 'all 0.3s ease',
+        transform: 'translateY(16px) scale(0.85) rotate(-2deg)',
+        transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
         maxWidth: '520px',
         width: 'fit-content',
         minWidth: '240px',
@@ -56,7 +57,7 @@
       // Animate in
       requestAnimationFrame(() => {
         toast.style.opacity = '1';
-        toast.style.transform = 'translateY(0)';
+        toast.style.transform = 'translateY(0) scale(1) rotate(0deg)';
       });
 
       const id = Date.now() + Math.random().toString(36).substr(2, 9);
@@ -75,7 +76,7 @@
     remove(toast) {
       if (!toast) return;
       toast.style.opacity = '0';
-      toast.style.transform = 'translateY(-20px)';
+      toast.style.transform = 'translateY(-20px) scale(0.9)';
       setTimeout(() => {
         if (toast.parentElement) toast.parentElement.removeChild(toast);
       }, 300);
@@ -151,46 +152,57 @@
     el.title = `Download ${mediaType === 'video' ? 'Video' : 'Image'}`;
     el.dataset.mediaType = mediaType;
 
-    // Use a simpler, slightly thicker icon that matches Meta's style
     el.innerHTML = `
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;">
+      <svg class="ad_library_downloader_icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; flex-shrink: 0;">
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
         <polyline points="7 10 12 15 17 10"></polyline>
         <line x1="12" y1="15" x2="12" y2="3"></line>
       </svg>
-      Download
+      Grab it!
     `;
 
+    const INK = '#1a1033';
+    const rest = { transform: 'rotate(-2deg)', boxShadow: `3px 3px 0 ${INK}` };
+    const hover = { transform: 'rotate(1deg) translate(-2px, -2px)', boxShadow: `5px 5px 0 ${INK}` };
+    const press = { transform: 'rotate(0deg) translate(3px, 3px)', boxShadow: `0 0 0 ${INK}` };
+
     Object.assign(el.style, {
-      padding: '5px 10px',
+      padding: '5px 12px',
       cursor: 'pointer',
-      background: '#e4e6eb', // Meta's secondary button color
-      color: '#050505',      // Meta's primary text color
-      border: 'none',
-      borderRadius: '6px',   // Matches the 'See ad details' button
+      background: '#ffd23f',
+      color: INK,
+      border: `2.5px solid ${INK}`,
+      borderRadius: '999px',
       fontSize: '12px',
-      fontWeight: '600',
+      fontWeight: '900',
+      letterSpacing: '0.2px',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
       marginLeft: '8px',
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
-      transition: 'background-color 0.2s ease',
-      boxShadow: 'none'
+      fontFamily: '"Avenir Next", "Trebuchet MS", system-ui, sans-serif',
+      userSelect: 'none',
+      transition: 'transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, background-color 0.2s ease',
+      ...rest
     });
 
+    const icon = () => el.querySelector('.ad_library_downloader_icon');
+
     el.onmouseenter = () => {
-      el.style.background = '#d8dadf'; // Meta's hover state color
+      Object.assign(el.style, hover, { background: '#ff5fa2', color: '#ffffff' });
+      const svg = icon();
+      if (svg && svg.animate) {
+        svg.animate(
+          [{ transform: 'translateY(0)' }, { transform: 'translateY(4px)' }, { transform: 'translateY(-2px)' }, { transform: 'translateY(0)' }],
+          { duration: 450, easing: 'ease-in-out' }
+        );
+      }
     };
     el.onmouseleave = () => {
-      el.style.background = '#e4e6eb';
+      Object.assign(el.style, rest, { background: '#ffd23f', color: INK });
     };
-    el.onmousedown = () => {
-      el.style.transform = 'scale(0.96)';
-    };
-    el.onmouseup = () => {
-      el.style.transform = 'scale(1)';
-    };
+    el.onmousedown = () => Object.assign(el.style, press);
+    el.onmouseup = () => Object.assign(el.style, hover);
 
     return el;
   }

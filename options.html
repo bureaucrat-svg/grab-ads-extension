@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ads Grabber - Settings</title>
+  <style>
+    :root {
+      --bg: #fff4d6; --ink: #1a1033; --pink: #ff5fa2; --yellow: #ffd23f; --mint: #3ddc97;
+      --bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    * { box-sizing: border-box; }
+    @keyframes pop { 0% { opacity: 0; transform: scale(.85) rotate(-3deg); } 100% { opacity: 1; transform: scale(1) rotate(var(--tilt, 0deg)); } }
+    @keyframes wiggle { 0%,100% { transform: rotate(-10deg); } 50% { transform: rotate(10deg); } }
+    html, body {
+      margin: 0; min-height: 100%; background-color: var(--bg);
+      background-image: radial-gradient(var(--ink) 1.2px, transparent 1.2px); background-size: 20px 20px;
+      color: var(--ink); font-family: "Avenir Next", "Trebuchet MS", system-ui, sans-serif;
+    }
+    .page { max-width: 640px; margin: 0 auto; padding: 48px 24px 80px; display: flex; flex-direction: column; gap: 28px; }
+    .header-block { text-align: center; animation: pop .55s var(--bounce) both; }
+    .header-block h1 {
+      display: inline-block; margin: 0; font-size: 36px; font-weight: 900; letter-spacing: -1.5px;
+      background: var(--pink); color: #fff; padding: 8px 24px; border: 4px solid var(--ink); border-radius: 20px;
+      box-shadow: 6px 6px 0 var(--ink); transform: rotate(-2deg);
+      -webkit-text-stroke: 1.5px var(--ink); paint-order: stroke fill;
+    }
+    .header-block h1 .emoji { display: inline-block; animation: wiggle 1.4s ease-in-out infinite; -webkit-text-stroke: 0; }
+    .header-block p { margin: 22px 0 0; font-size: 16px; font-weight: 800; }
+
+    .card {
+      background: #fff; border: 3px solid var(--ink); border-radius: 24px; padding: 22px;
+      box-shadow: 6px 6px 0 var(--ink); animation: pop .55s var(--bounce) both;
+      transition: transform .25s var(--bounce), box-shadow .25s;
+    }
+    .card:nth-of-type(1) { --tilt: -1deg; transform: rotate(-1deg); background: #e4ecff; animation-delay: .1s; }
+    .card:nth-of-type(2) { --tilt: 1deg; transform: rotate(1deg); background: #ffe3f0; animation-delay: .2s; }
+    .card:hover { transform: rotate(0) translate(-3px,-3px); box-shadow: 10px 10px 0 var(--ink); }
+    .card h2 { margin: 0 0 6px; font-size: 19px; font-weight: 900; display: flex; align-items: center; gap: 10px; }
+    .ico {
+      width: 40px; height: 40px; flex-shrink: 0; display: grid; place-items: center; font-size: 20px;
+      background: var(--yellow); border: 3px solid var(--ink); border-radius: 12px; transform: rotate(-6deg);
+    }
+    .hint { margin: 0 0 16px; font-size: 14px; font-weight: 700; }
+
+    .select-wrapper { position: relative; }
+    select {
+      width: 100%; appearance: none; font: inherit; font-size: 15px; font-weight: 800; color: var(--ink);
+      background: #fff; padding: 12px 40px 12px 14px; border: 3px solid var(--ink); border-radius: 14px;
+      box-shadow: 3px 3px 0 var(--ink); cursor: pointer; outline: none; transition: transform .12s, box-shadow .12s;
+    }
+    select:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--ink); }
+    select:focus-visible { outline: 3px solid var(--mint); outline-offset: 2px; }
+    .select-wrapper::after { content: "▼"; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 12px; pointer-events: none; }
+
+    .toggle-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 0; border-top: 3px dashed var(--ink); }
+    .toggle-row:first-of-type { border-top: none; padding-top: 4px; }
+    .toggle-row:last-child { padding-bottom: 0; }
+    .toggle-info { flex: 1; cursor: pointer; }
+    .toggle-info strong { display: block; font-size: 16px; font-weight: 900; margin-bottom: 2px; }
+    .toggle-info span { font-size: 13px; font-weight: 600; line-height: 1.4; }
+
+    .switch { position: relative; width: 62px; height: 34px; flex-shrink: 0; }
+    .switch input { position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; z-index: 1; }
+    .slider { position: absolute; inset: 0; background: #fff; border: 3px solid var(--ink); border-radius: 999px; box-shadow: 3px 3px 0 var(--ink); transition: background .25s; }
+    .slider::before {
+      content: "😴"; position: absolute; left: 2px; top: 50%; width: 24px; height: 24px; margin-top: -12px;
+      display: grid; place-items: center; font-size: 15px; background: var(--yellow); border: 2.5px solid var(--ink); border-radius: 50%;
+      transition: transform .35s var(--bounce);
+    }
+    .switch input:checked + .slider { background: var(--mint); }
+    .switch input:checked + .slider::before { content: "😎"; transform: translateX(28px) rotate(360deg); }
+    .switch input:focus-visible + .slider { outline: 3px solid var(--pink); outline-offset: 3px; }
+
+    #status {
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(30px) scale(.8);
+      background: var(--ink); color: #fff; padding: 12px 22px; border-radius: 999px; font-size: 14px; font-weight: 800;
+      opacity: 0; pointer-events: none; transition: all .35s var(--bounce); z-index: 10; white-space: nowrap;
+    }
+    #status.show { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="header-block">
+      <h1>Settings <span class="emoji">🎛️</span></h1>
+      <p>Tweak Ads Grabber your way. Changes save automatically!</p>
+    </div>
+
+    <div class="card">
+      <h2><span class="ico">🎞️</span> Media Filter</h2>
+      <p class="hint">Pick which ad formats show up in your Ads Library searches.</p>
+      <div class="select-wrapper">
+        <select id="media_type" aria-label="Media filter">
+          <option value="all">All Media Types</option>
+          <option value="video">Video Only</option>
+          <option value="image">Image Only</option>
+          <option value="image_and_meme">Image and Meme</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2><span class="ico">⚡</span> Features</h2>
+      <div class="toggle-row">
+        <label for="metaDownloaderToggle" class="toggle-info">
+          <strong>Meta Ads Downloader</strong>
+          <span>Inject quick download buttons for videos &amp; images.</span>
+        </label>
+        <div class="switch">
+          <input type="checkbox" id="metaDownloaderToggle" checked />
+          <span class="slider"></span>
+        </div>
+      </div>
+      <div class="toggle-row">
+        <label for="contextMenuToggle" class="toggle-info">
+          <strong>Context Menu Search</strong>
+          <span>Right-click any text to search the Ads Library instantly.</span>
+        </label>
+        <div class="switch">
+          <input type="checkbox" id="contextMenuToggle" checked />
+          <span class="slider"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="status" role="status" aria-live="polite">Saved!</div>
+  <script src="options.js"></script>
+</body>
+</html>

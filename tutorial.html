@@ -6,155 +6,115 @@
   <title>Ads Grabber - Welcome!</title>
   <style>
     :root {
-      --bg: #ffffff;
-      --text: #000000;
-      --muted: #666666;
-      --border: #e0e0e0;
-      --border-hover: #000000;
-      --accent: #000000;
-      --accent-muted: rgba(0, 0, 0, 0.05);
-      --radius: 8px;
+      --bg: #fff4d6;
+      --ink: #1a1033;
+      --pink: #ff5fa2;
+      --yellow: #ffd23f;
+      --mint: #3ddc97;
+      --blue: #4d7cff;
+      --bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
     }
-
+    * { box-sizing: border-box; }
+    @keyframes pop { 0% { opacity: 0; transform: scale(.85) rotate(-3deg); } 100% { opacity: 1; transform: scale(1) rotate(var(--tilt, 0deg)); } }
+    @keyframes wiggle { 0%,100% { transform: rotate(-10deg); } 50% { transform: rotate(10deg); } }
+    @keyframes float { 0%,100% { transform: translateY(0) rotate(var(--r, 0deg)); } 50% { transform: translateY(-12px) rotate(var(--r, 0deg)); } }
+    @keyframes blink { 50% { opacity: 0; } }
 
     html, body {
-      height: 100%;
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+      margin: 0; min-height: 100%;
+      background-color: var(--bg);
+      background-image: radial-gradient(var(--ink) 1.2px, transparent 1.2px);
+      background-size: 20px 20px;
+      color: var(--ink);
+      font-family: "Avenir Next", "Trebuchet MS", system-ui, sans-serif;
+      overflow-x: hidden;
     }
+    .deco { position: fixed; font-size: 40px; pointer-events: none; animation: float 4s ease-in-out infinite; z-index: 0; }
+    .deco.a { top: 8%; left: 6%; --r: -12deg; }
+    .deco.b { top: 22%; right: 7%; --r: 14deg; animation-delay: -1.5s; }
+    .deco.c { bottom: 10%; left: 8%; --r: 8deg; animation-delay: -2.5s; }
+    .deco.d { bottom: 18%; right: 6%; --r: -8deg; animation-delay: -1s; }
+    @media (max-width: 900px) { .deco { display: none; } }
 
     .page {
-      max-width: 640px;
-      margin: 48px auto;
-      padding: 0 24px;
-      display: flex;
-      flex-direction: column;
+      position: relative; z-index: 1; max-width: 640px; margin: 0 auto; padding: 48px 24px 64px;
+      display: flex; flex-direction: column; gap: 28px;
     }
-
-    .header-block {
-      margin-bottom: 32px;
-      padding-bottom: 16px;
-      border-bottom: 2px solid var(--text);
-      text-align: center;
-    }
-
+    .header-block { text-align: center; animation: pop .55s var(--bounce) both; }
     .header-block h1 {
-      margin: 0;
-      font-size: 32px;
-      font-weight: 800;
-      letter-spacing: -0.03em;
+      display: inline-block; margin: 0; font-size: 38px; font-weight: 900; letter-spacing: -1.5px; line-height: 1.1;
+      background: var(--pink); color: #fff; padding: 10px 24px; border: 4px solid var(--ink);
+      border-radius: 20px; box-shadow: 6px 6px 0 var(--ink); transform: rotate(-2deg);
+      -webkit-text-stroke: 1.5px var(--ink); paint-order: stroke fill;
     }
-
-    .header-block p {
-      margin: 8px 0 0;
-      color: var(--muted);
-      font-size: 16px;
-    }
+    .header-block h1 .emoji { display: inline-block; animation: wiggle 1.4s ease-in-out infinite; -webkit-text-stroke: 0; }
+    .header-block p { margin: 22px 0 0; font-size: 17px; font-weight: 800; }
 
     .feature-card {
-      background: var(--accent-muted);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 24px;
-      margin-bottom: 24px;
+      background: #fff; border: 3px solid var(--ink); border-radius: 24px; padding: 22px;
+      box-shadow: 6px 6px 0 var(--ink); animation: pop .55s var(--bounce) both;
+      transition: transform .25s var(--bounce), box-shadow .25s;
     }
+    .feature-card:nth-of-type(1) { --tilt: -1deg; transform: rotate(-1deg); background: #e4ecff; animation-delay: .1s; }
+    .feature-card:nth-of-type(2) { --tilt: 1deg; transform: rotate(1deg); background: #ffe3f0; animation-delay: .2s; }
+    .feature-card:nth-of-type(3) { --tilt: -.6deg; transform: rotate(-.6deg); background: #d8fbe9; animation-delay: .3s; }
+    .feature-card:hover { transform: rotate(0) translate(-3px,-3px); box-shadow: 10px 10px 0 var(--ink); }
 
-    .feature-card h2 {
-      margin: 0 0 12px;
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
+    .feature-card h2 { margin: 0 0 14px; font-size: 19px; font-weight: 900; display: flex; align-items: center; gap: 10px; }
+    .feature-card h2 .ico {
+      width: 40px; height: 40px; flex-shrink: 0; display: grid; place-items: center; font-size: 20px;
+      background: var(--yellow); border: 3px solid var(--ink); border-radius: 12px; transform: rotate(-6deg);
     }
-
-    .feature-card p {
-      margin: 0 0 16px;
-      font-size: 15px;
-      line-height: 1.5;
-    }
-
-    .feature-card ul {
-      margin: 0;
-      padding-left: 20px;
-      font-size: 15px;
-      line-height: 1.5;
-    }
-
-    .feature-card li {
-      margin-bottom: 8px;
-    }
+    .feature-card p, .feature-card li { margin: 0 0 14px; font-size: 15px; font-weight: 600; line-height: 1.5; }
+    .feature-card p:last-child { margin-bottom: 0; }
+    .feature-card ul { margin: 0; padding: 0; list-style: none; }
+    .feature-card li { margin: 0; }
+    strong { background: var(--yellow); padding: 0 4px; border-radius: 4px; }
 
     .code-block {
-      background: var(--border);
-      padding: 12px;
-      border-radius: 6px;
-      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
-      font-size: 13px;
-      overflow-x: auto;
+      background: var(--ink); color: #fff; padding: 14px 16px; border-radius: 14px;
+      font-family: "SFMono-Regular", Menlo, Consolas, monospace; font-size: 13px; line-height: 1.6; overflow-x: auto;
     }
+    .code-block strong { background: var(--pink); color: #fff; }
+    .code-block .ex { color: var(--mint); }
+    .code-block .cursor { display: inline-block; width: 8px; height: 14px; background: var(--mint); vertical-align: -2px; animation: blink 1s steps(1) infinite; }
 
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 12px 24px;
-      border-radius: var(--radius);
-      background: var(--text);
-      color: var(--bg);
-      font-size: 15px;
-      font-weight: 600;
-      text-decoration: none;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      margin-top: 16px;
-      align-self: center;
-    }
-
-    .btn:hover {
-      opacity: 0.9;
-    }
+    .footer { text-align: center; font-weight: 900; font-size: 15px; animation: pop .55s var(--bounce) .4s both; }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
   </style>
 </head>
 <body>
+  <span class="deco a">⭐</span><span class="deco b">🎣</span><span class="deco c">✨</span><span class="deco d">🚀</span>
+
   <div class="page">
     <div class="header-block">
-      <h1>Welcome to Ads Grabber! 🎉</h1>
+      <h1>Welcome to Ads Grabber! <span class="emoji">🎉</span></h1>
       <p>Your tiny, powerful helper for the Meta Ads Library.</p>
     </div>
 
     <div class="feature-card">
-      <h2>🔍 Address Bar Shortcuts (Omnibox)</h2>
-      <p>Extract domain from URL and search Meta Ads Library:</p>
+      <h2><span class="ico">🔍</span> Address Bar Shortcuts</h2>
+      <p>Pull the domain from any URL and search the Meta Ads Library in one go:</p>
       <div class="code-block">
-        Type: <strong>@ads</strong> + Space + any URL, then hit Enter.<br><br>
-        <strong>Example:</strong><br>
-        @ads https://example.com/shoes&nbsp;&nbsp;→ searches Meta Ads Library for example.com
+        Type <strong>@ads</strong> + Space + any URL, then hit Enter.<br><br>
+        <span class="ex">@ads https://example.com/shoes</span><span class="cursor"></span><br>
+        → searches the Ads Library for example.com
       </div>
     </div>
 
     <div class="feature-card">
-      <h2>🖱️ Right-Click & Quick Search</h2>
+      <h2><span class="ico">🖱️</span> Right-Click &amp; Quick Search</h2>
       <ul>
-        <li><strong>From any page:</strong> Select any text, right-click, and choose <em>"Search Ads Library for..."</em></li>
+        <li><strong>From any page:</strong> select some text, right-click, and choose <em>"Search Ads Library for..."</em></li>
       </ul>
     </div>
 
     <div class="feature-card">
-      <h2>⬇️ Meta Ads Downloader</h2>
-      <p>Inside the Meta Ads Library, you'll see quick <strong>download buttons</strong> right on ad images and videos. Save creatives directly to your computer!</p>
+      <h2><span class="ico">⬇️</span> Meta Ads Downloader</h2>
+      <p>Inside the Meta Ads Library you'll spot quick <strong>download buttons</strong> right on ad images and videos. Save creatives straight to your computer!</p>
     </div>
 
-    <div class="feature-card">
-      <h2>⚙️ Settings & Customization</h2>
-      <p>Customize how the extension works by clicking the extension icon to open the <strong>Settings Side Panel</strong>. You can filter results by Media Type and disable/enable features.</p>
-    </div>
-
-    <a href="sidepanel.html" class="btn" id="openOptionsBtn">Open Settings</a>
+    <div class="footer">Happy grabbing! 🎈</div>
   </div>
-
-  <script src="tutorial.js"></script>
 </body>
 </html>

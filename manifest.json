@@ -7,8 +7,7 @@
     "activeTab",
     "scripting",
     "storage",
-    "contextMenus",
-    "sidePanel"
+    "contextMenus"
   ],
   "host_permissions": [
     "https://www.facebook.com/ads/library*",
@@ -19,11 +18,9 @@
   "omnibox": {
     "keyword": "@ads"
   },
+  "options_page": "options.html",
   "background": {
     "service_worker": "background.js"
-  },
-  "side_panel": {
-    "default_path": "sidepanel.html"
   },
   "content_scripts": [
     {

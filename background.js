@@ -111,8 +111,8 @@ function escapeXml(s) {
 }
 
 
-// Open side panel on extension icon click
-chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true }).catch((error) => console.error(error));
+// Open the settings page on extension icon click
+chrome.action.onClicked.addListener(() => chrome.runtime.openOptionsPage());
 
 
 // ---- CONTEXT MENU FOR SELECTED TEXT ----

@@ -34,9 +34,10 @@ That's it!
 ### 2) From any page
 - Select text, right‑click → “Search Ads Library for "..."”.
 
-### 3) Settings (Side Panel)
-Click the extension icon to open the side panel settings.
+### 3) Settings (Options Page)
+Click the extension icon (or right-click → Options) to open the settings page.
 - **Media Type**: All / Video / Image / Image + Meme (applied to all your searches).
+- **Features**: toggle the Meta Ads Downloader and Context Menu Search.
 
 ---
 
@@ -52,7 +53,7 @@ Click the extension icon to open the side panel settings.
 - `background.js` – Omnibox logic, context menus, and domain search handlers.
 - `content-filter.js` – Enforces default media type filter on the Meta Ads Library page.
 - `meta-ads-downloader.js` – Injects download buttons on creatives within the Ads Library.
-- `sidepanel.html` & `sidepanel.js` – Side panel UI for Settings (media type).
+- `options.html` & `options.js` – Settings page (media type, feature toggles).
 
 ---
 
